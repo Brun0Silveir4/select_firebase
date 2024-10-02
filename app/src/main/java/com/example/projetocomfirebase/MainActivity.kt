@@ -165,7 +165,7 @@ fun App( db: FirebaseFirestore) {
         }
         Row(
             Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             Column(
                 Modifier
@@ -182,7 +182,7 @@ fun App( db: FirebaseFirestore) {
         }
         Row(
             Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             val clientes = mutableStateListOf<HashMap<String, String>>()
             db.collection("Clientes")
