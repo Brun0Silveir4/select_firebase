@@ -165,7 +165,7 @@ fun App( db: FirebaseFirestore) {
         }
         Row(
             Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
         ) {
             Column(
                 Modifier
