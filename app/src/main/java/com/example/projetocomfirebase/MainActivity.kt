@@ -190,6 +190,7 @@ fun App( db: FirebaseFirestore) {
                 .addOnSuccessListener { documents ->
                     for (document in documents) {
                         val lista = hashMapOf(
+                            "id" to document.id,
                             "nome" to "${document.data.get("nome")}",
                             "telefone" to "${document.data.get("telefone")}",
                         )
@@ -211,25 +212,23 @@ fun App( db: FirebaseFirestore) {
                         }
                         Column(modifier = Modifier.weight(0.2f)){
                             Button(onClick = {
-                                db.collection("Clientes")
-                                    .get()
-                                    .addOnSuccessListener { documents ->
-                                        for (document in documents) {
-                                            db.collection("Clientes").document(document.id).delete()
-                                                .addOnSuccessListener {
-                                                    Log.d(TAG, "DocumentSnapshot successfully deleted!")
-                                                }
-                                                .addOnFailureListener { e ->
-                                                    Log.w(TAG, "Error deleting document", e)
-                                                }
+                                val clienteId = cliente["id"]
+
+                                if (clienteId != null) {
+                                    db.collection("Clientes").document(clienteId).delete()
+                                        .addOnSuccessListener {
+                                            Log.d(TAG, "DocumentSnapshot successfully deleted!")
                                         }
-                                    }
-                                    .addOnFailureListener { e ->
-                                        Log.w(TAG, "Error getting documents to delete", e)
-                                    }
+                                        .addOnFailureListener { e ->
+                                            Log.w(TAG, "Error deleting document", e)
+                                        }
+                                } else {
+                                    Log.w(TAG, "Error: Cliente ID is null")
+                                }
                             }) {
-                                Text(text = "Delete")
+                                Text(text = "Deletar")
                             }
+
 
                         }
 
