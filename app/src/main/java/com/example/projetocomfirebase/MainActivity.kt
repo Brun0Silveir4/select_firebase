@@ -203,12 +203,36 @@ fun App( db: FirebaseFirestore) {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(clientes) { cliente ->
                     Row(modifier = Modifier.fillMaxSize()) {
-                        Column(modifier = Modifier.weight(0.5f)) {
+                        Column(modifier = Modifier.weight(0.3f)) {
                             Text(text = cliente["nome"] ?: "---")
                         }
-                        Column(modifier = Modifier.weight(0.5f)) {
+                        Column(modifier = Modifier.weight(0.3f)) {
                             Text(text = cliente["telefone"] ?: "---")
                         }
+                        Column(modifier = Modifier.weight(0.2f)){
+                            Button(onClick = {
+                                db.collection("Clientes")
+                                    .get()
+                                    .addOnSuccessListener { documents ->
+                                        for (document in documents) {
+                                            db.collection("Clientes").document(document.id).delete()
+                                                .addOnSuccessListener {
+                                                    Log.d(TAG, "DocumentSnapshot successfully deleted!")
+                                                }
+                                                .addOnFailureListener { e ->
+                                                    Log.w(TAG, "Error deleting document", e)
+                                                }
+                                        }
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Log.w(TAG, "Error getting documents to delete", e)
+                                    }
+                            }) {
+                                Text(text = "Delete")
+                            }
+
+                        }
+
                     }
                 }
             }
